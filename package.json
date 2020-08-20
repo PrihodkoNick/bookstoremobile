@@ -11,9 +11,11 @@
     "native": "react-native"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.12.0",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/drawer": "^5.9.0",
     "@react-navigation/native": "^5.7.3",
+    "axios": "^0.19.2",
     "localstorage-polyfill": "^1.0.1",
     "native-base": "^2.13.13",
     "react": "16.13.1",
@@ -40,8 +42,8 @@
     "eslint": "^6.5.1",
     "jest": "^25.1.0",
     "metro-react-native-babel-preset": "^0.59.0",
-    "react-test-renderer": "16.13.1",
     "prettier": "^2.0.4",
+    "react-test-renderer": "16.13.1",
     "typescript": "^3.8.3"
   },
   "jest": {
@@ -54,5 +56,6 @@
       "json",
       "node"
     ]
-  }
+  },
+  "proxy": "http://localhost:5000"
 }

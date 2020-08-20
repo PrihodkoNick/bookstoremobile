@@ -14,7 +14,7 @@ import {
   Body,
 } from 'native-base';
 
-const Home = ({navigation}) => {
+const Profile = ({navigation}) => {
   const toggleDrawer = () => {
     navigation.openDrawer();
   };
@@ -36,7 +36,7 @@ const Home = ({navigation}) => {
         <Card>
           <CardItem>
             <Body>
-              <Text>Home screen</Text>
+              <Text>Profile screen</Text>
             </Body>
           </CardItem>
         </Card>
@@ -45,4 +45,4 @@ const Home = ({navigation}) => {
   );
 };
 
-export default Home;
+export default Profile;

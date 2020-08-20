@@ -1,22 +1,34 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
 import {
   Container,
   Header,
   Content,
-  Card,
-  CardItem,
   Body,
   Text,
   Left,
   Button,
   Title,
   Right,
+  View,
 } from 'native-base';
 
-const Login = ({navigation}) => {
+import {login} from '../../actions/auth';
+
+import LoginForm from './components/LoginForm';
+
+const Login = ({navigation, isAuthenticated, login}) => {
+  if (isAuthenticated) {
+    navigation.navigate('Home');
+  }
+
   const toggleDrawer = () => {
     navigation.openDrawer();
+  };
+
+  const onLoginSubmit = (credentials) => {
+    login(credentials);
   };
 
   return (
@@ -33,16 +45,17 @@ const Login = ({navigation}) => {
         <Right />
       </Header>
       <Content padder>
-        <Card>
-          <CardItem>
-            <Body>
-              <Text>Login screen</Text>
-            </Body>
-          </CardItem>
-        </Card>
+        <View>
+          <Text>Sign In</Text>
+        </View>
+        <LoginForm onSubmit={onLoginSubmit} />
       </Content>
     </Container>
   );
 };
 
-export default Login;
+const mapStateToProps = ({auth}) => ({
+  isAuthenticated: auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, {login})(Login);

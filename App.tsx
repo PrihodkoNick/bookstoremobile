@@ -1,24 +1,58 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {connect, batch} from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {NavigationContainer} from '@react-navigation/native';
+
+import {loadUser} from './src/actions/auth';
 
 import Home from './src/screens/Home/Home';
 import Login from './src/screens/Login/Login';
 import Register from './src/screens/Register/Register';
+import Profile from './src/screens/Profile/Profile';
+
 const Drawer = createDrawerNavigator();
 
-const App = () => {
+const getToken = async () => {
+  return await AsyncStorage.getItem('token');
+};
+
+const App = ({isAuthenticated, loadUser}) => {
+  // useEffect(() => {
+  //   const token = getToken();
+  //   if (token) {
+  //     batch(() => {
+  //       loadUser();
+  //       // loadFavorites();
+  //     });
+  //   }
+  // }, [loadUser]);
+
   return (
     <>
       <NavigationContainer>
         <Drawer.Navigator initialRouteName="Home">
           <Drawer.Screen name="Home" component={Home} />
-          <Drawer.Screen name="Login" component={Login} />
-          <Drawer.Screen name="Register" component={Register} />
+          {!isAuthenticated ? (
+            <>
+              <Drawer.Screen name="Login" component={Login} />
+              <Drawer.Screen name="Register" component={Register} />
+            </>
+          ) : (
+            <>
+              <Drawer.Screen name="Profile" component={Profile} />
+              {/* <Button>Logout</Button> */}
+            </>
+          )}
+          {/* <Drawer.Screen name="Favorites" component={Favorites} /> */}
         </Drawer.Navigator>
       </NavigationContainer>
     </>
   );
 };
 
-export default App;
+const mapStateToProps = ({auth}) => ({
+  isAuthenticated: auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, {loadUser})(App);

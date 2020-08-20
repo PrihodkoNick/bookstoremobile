@@ -4,14 +4,15 @@ import {
   Container,
   Header,
   Content,
-  Card,
-  CardItem,
   Body,
   Text,
   Left,
   Button,
   Title,
   Right,
+  Form,
+  Item,
+  Input,
 } from 'native-base';
 
 const Register = ({navigation}) => {
@@ -33,13 +34,23 @@ const Register = ({navigation}) => {
         <Right />
       </Header>
       <Content padder>
-        <Card>
-          <CardItem>
-            <Body>
-              <Text>Register screen</Text>
-            </Body>
-          </CardItem>
-        </Card>
+        <Form>
+          <Item>
+            <Input placeholder="User name" />
+          </Item>
+          <Item>
+            <Input placeholder="Email" />
+          </Item>
+          <Item last>
+            <Input placeholder="Password" secureTextEntry={true} />
+          </Item>
+          <Item>
+            <Input placeholder="Confirm password" secureTextEntry={true} />
+          </Item>
+        </Form>
+        <Button block>
+          <Text>Sign Up</Text>
+        </Button>
       </Content>
     </Container>
   );

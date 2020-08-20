@@ -1,8 +1,8 @@
 import {ACTION_TYPES} from '../actions/types';
-import 'localstorage-polyfill';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const initialState = {
-  token: localStorage.getItem('token'),
+  token: AsyncStorage.getItem('token'),
   user: null,
   isAuthenticated: null,
   loading: false,
