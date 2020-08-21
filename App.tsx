@@ -10,6 +10,7 @@ import Home from './src/screens/Home/Home';
 import Login from './src/screens/Login/Login';
 import Register from './src/screens/Register/Register';
 import Profile from './src/screens/Profile/Profile';
+import Favorites from './src/screens/Favorites/Favorites';
 
 const Drawer = createDrawerNavigator();
 
@@ -18,15 +19,15 @@ const getToken = async () => {
 };
 
 const App = ({isAuthenticated, loadUser}) => {
-  // useEffect(() => {
-  //   const token = getToken();
-  //   if (token) {
-  //     batch(() => {
-  //       loadUser();
-  //       // loadFavorites();
-  //     });
-  //   }
-  // }, [loadUser]);
+  useEffect(() => {
+    const token = getToken();
+    if (token) {
+      batch(() => {
+        loadUser();
+        // loadFavorites();
+      });
+    }
+  }, [loadUser]);
 
   return (
     <>
@@ -41,10 +42,9 @@ const App = ({isAuthenticated, loadUser}) => {
           ) : (
             <>
               <Drawer.Screen name="Profile" component={Profile} />
-              {/* <Button>Logout</Button> */}
+              <Drawer.Screen name="Favorites" component={Favorites} />
             </>
           )}
-          {/* <Drawer.Screen name="Favorites" component={Favorites} /> */}
         </Drawer.Navigator>
       </NavigationContainer>
     </>
