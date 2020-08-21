@@ -1,37 +1,20 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
-import {
-  Container,
-  Header,
-  Left,
-  Right,
-  Content,
-  Text,
-  Card,
-  CardItem,
-  Button,
-  Title,
-  Body,
-} from 'native-base';
+import {Container, Content, Text, Card, CardItem, Body} from 'native-base';
 
-const Home = ({navigation}) => {
-  const toggleDrawer = () => {
-    navigation.openDrawer();
-  };
+import {logout} from '../../actions/auth';
 
+import HeaderApp from '../../components/Header/HeaderApp';
+
+const Home = ({navigation, isAuthenticated, logout}) => {
   return (
     <Container>
-      <Header>
-        <Left>
-          <Button transparent onPress={toggleDrawer}>
-            <Text>Menu</Text>
-          </Button>
-        </Left>
-        <Body>
-          <Title>Book Store</Title>
-        </Body>
-        <Right />
-      </Header>
+      <HeaderApp
+        navigation={navigation}
+        isAuthenticated={isAuthenticated}
+        logout={logout}
+      />
       <Content padder>
         <Card>
           <CardItem>
@@ -45,4 +28,8 @@ const Home = ({navigation}) => {
   );
 };
 
-export default Home;
+const mapStateToProps = ({auth}) => ({
+  isAuthenticated: auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, {logout})(Home);

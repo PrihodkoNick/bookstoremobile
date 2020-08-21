@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
 import {
   Container,
@@ -10,14 +11,24 @@ import {
   Button,
   Title,
   Right,
-  Form,
-  Item,
-  Input,
+  View,
 } from 'native-base';
 
-const Register = ({navigation}) => {
+import {register} from '../../actions/auth';
+
+import RegisterForm from './components/RegisterForm';
+
+const Register = ({navigation, isAuthenticated, register}) => {
+  if (isAuthenticated) {
+    navigation.navigate('Home');
+  }
+
   const toggleDrawer = () => {
     navigation.openDrawer();
+  };
+
+  const onRegisterSubmit = (credentials) => {
+    register(credentials);
   };
 
   return (
@@ -34,26 +45,17 @@ const Register = ({navigation}) => {
         <Right />
       </Header>
       <Content padder>
-        <Form>
-          <Item>
-            <Input placeholder="User name" />
-          </Item>
-          <Item>
-            <Input placeholder="Email" />
-          </Item>
-          <Item last>
-            <Input placeholder="Password" secureTextEntry={true} />
-          </Item>
-          <Item>
-            <Input placeholder="Confirm password" secureTextEntry={true} />
-          </Item>
-        </Form>
-        <Button block>
+        <View>
           <Text>Sign Up</Text>
-        </Button>
+        </View>
+        <RegisterForm onSubmit={onRegisterSubmit} />
       </Content>
     </Container>
   );
 };
 
-export default Register;
+const mapStateToProps = ({auth}) => ({
+  isAuthenticated: auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, {register})(Register);

@@ -7,7 +7,7 @@ import {logout} from '../../actions/auth';
 
 import HeaderApp from '../../components/Header/HeaderApp';
 
-const Profile = ({navigation, isAuthenticated, logout}) => {
+const Favorites = ({navigation, isAuthenticated, logout}) => {
   return (
     <Container>
       <HeaderApp
@@ -19,7 +19,7 @@ const Profile = ({navigation, isAuthenticated, logout}) => {
         <Card>
           <CardItem>
             <Body>
-              <Text>Profile screen</Text>
+              <Text>Favorites screen</Text>
             </Body>
           </CardItem>
         </Card>
@@ -32,4 +32,4 @@ const mapStateToProps = ({auth}) => ({
   isAuthenticated: auth.isAuthenticated,
 });
 
-export default connect(mapStateToProps, {logout})(Profile);
+export default connect(mapStateToProps, {logout})(Favorites);
