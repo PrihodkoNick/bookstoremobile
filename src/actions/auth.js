@@ -3,43 +3,16 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {showToast} from '../utils/showToast';
 import {ACTION_TYPES} from './types';
 
-// Register User
-export const register = ({name, email, password}) => (dispatch) => {
-  const body = JSON.stringify({name, email, password});
-
-  registerUser(body)
-    .then(async (res) => {
-      await AsyncStorage.setItem('token', res.data.token);
-
-      dispatch({
-        type: ACTION_TYPES.registerSuccess,
-        payload: res.data,
-      });
-
-      // dispatch(setAlert("Registration success!", "success"));
-      dispatch(loadUser()); // load User after registration
-    })
-    .catch(async (err) => {
-      const errors = err.response.data.errors;
-      if (errors) {
-        console.log(errors);
-        // errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
-      }
-      await AsyncStorage.removeItem('token');
-
-      dispatch({
-        type: ACTION_TYPES.registerFail,
-      });
-    });
-};
-
 // Login User
 export const login = ({email, password}) => (dispatch) => {
   const body = JSON.stringify({email, password});
+  console.log('login -> body: ', body);
 
   loginUser(body)
     .then(async (res) => {
+      console.log(1);
       await AsyncStorage.setItem('token', res.data.token);
+      console.log(2);
 
       dispatch({
         type: ACTION_TYPES.loginSuccess,
@@ -47,12 +20,16 @@ export const login = ({email, password}) => (dispatch) => {
       });
 
       showToast('Login success', 'success');
-
+      console.log(123);
       dispatch(loadUser()); // load User after login
+      console.log(456);
       // dispatch(loadFavorites()); // load favorites after login
     })
     .catch(async (err) => {
+      console.log('e1');
       const errors = err.response.data.errors;
+      console.log('login -> errors: ', errors);
+      
       if (errors) {
         errors.forEach((error) => showToast(error.msg, 'danger'));
       }

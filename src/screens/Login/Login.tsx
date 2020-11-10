@@ -39,6 +39,8 @@ const Login: FC<LoginProps> = ({navigation, isAuthenticated, login}) => {
   };
 
   const onLoginSubmit = (credentials: CredsType) => {
+    console.log('onLoginSubmit -> credentials: ', credentials);
+
     login(credentials);
   };
 
