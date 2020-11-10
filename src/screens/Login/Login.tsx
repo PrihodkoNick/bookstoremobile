@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {connect} from 'react-redux';
 
 import {
@@ -18,7 +18,18 @@ import {login} from '../../actions/auth';
 
 import LoginForm from './components/LoginForm';
 
-const Login = ({navigation, isAuthenticated, login}) => {
+type CredsType = {
+  email: string;
+  password: string;
+};
+
+interface LoginProps {
+  navigation: any;
+  isAuthenticated: boolean;
+  login: (credentials: CredsType) => void;
+}
+
+const Login: FC<LoginProps> = ({navigation, isAuthenticated, login}) => {
   if (isAuthenticated) {
     navigation.navigate('Home');
   }
@@ -27,7 +38,7 @@ const Login = ({navigation, isAuthenticated, login}) => {
     navigation.openDrawer();
   };
 
-  const onLoginSubmit = (credentials) => {
+  const onLoginSubmit = (credentials: CredsType) => {
     login(credentials);
   };
 
@@ -54,7 +65,7 @@ const Login = ({navigation, isAuthenticated, login}) => {
   );
 };
 
-const mapStateToProps = ({auth}) => ({
+const mapStateToProps = ({auth}: {auth: any}) => ({
   isAuthenticated: auth.isAuthenticated,
 });
 

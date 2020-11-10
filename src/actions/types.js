@@ -1,7 +1,4 @@
 export const ACTION_TYPES = {
-  setAlert: 'SET_ALERT/Alerts',
-  removeAlert: 'REMOVE_ALERT/Alerts',
-
   registerSuccess: 'REGISTER_SUCCESS/Auth',
   registerFail: 'REGISTER_FAIL/Auth',
   loginSuccess: 'LOGIN_SUCCESS/Auth',

@@ -1,8 +1,18 @@
-import React, {useState} from 'react';
-
+import React, {useState, FC} from 'react';
+import {NativeSyntheticEvent, TextInputChangeEventData} from 'react-native';
 import {Form, Item, Input, Button, Text} from 'native-base';
+import {showToast} from '../../../utils/showToast';
 
-const LoginForm = ({onSubmit}) => {
+type CredsType = {
+  email: string;
+  password: string;
+};
+
+interface LoginFormProps {
+  onSubmit: (credentials: CredsType) => void;
+}
+
+const LoginForm: FC<LoginFormProps> = ({onSubmit}) => {
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
@@ -10,18 +20,11 @@ const LoginForm = ({onSubmit}) => {
 
   const {email, password} = credentials;
 
-  const handleEmailChange = (e) => {
-    setCredentials({
-      ...credentials,
-      email: e.nativeEvent.text,
-    });
-  };
-
-  const handlePasswordChange = (e) => {
-    setCredentials({
-      ...credentials,
-      password: e.nativeEvent.text,
-    });
+  const handleChange = (
+    e: NativeSyntheticEvent<TextInputChangeEventData>,
+    inputName: string,
+  ) => {
+    setCredentials({...credentials, [inputName]: e.nativeEvent.text});
   };
 
   const checkFields = () => {
@@ -29,14 +32,14 @@ const LoginForm = ({onSubmit}) => {
 
     const emailValid = email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
     if (!emailValid) {
-      // setAlert("Please include a valid email", "danger");
-      console.log('Please include a valid email');
+      showToast('Please enter a valid email', 'danger');
+
       isValid = false;
     }
 
     if (password.length < 6) {
-      // setAlert("Please enter a password with 6 or more characters", "danger");
-      console.log('Please enter a password with 6 or more characters');
+      showToast('Please enter a password with 6 or more characters', 'danger');
+
       isValid = false;
     }
 
@@ -55,15 +58,16 @@ const LoginForm = ({onSubmit}) => {
     <Form>
       <Item>
         <Input
+          autoFocus
           placeholder="Email Address"
-          onChange={(e) => handleEmailChange(e)}
+          onChange={(e) => handleChange(e, 'email')}
         />
       </Item>
       <Item last>
         <Input
           placeholder="Password"
           secureTextEntry={true}
-          onChange={(e) => handlePasswordChange(e)}
+          onChange={(e) => handleChange(e, 'password')}
         />
       </Item>
       <Button block onPress={handleLogin}>

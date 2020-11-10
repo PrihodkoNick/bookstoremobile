@@ -1,5 +1,5 @@
-import React from 'react';
-
+import React, {FC} from 'react';
+import {connect} from 'react-redux';
 import {
   Container,
   Header,
@@ -10,14 +10,30 @@ import {
   Button,
   Title,
   Right,
-  Form,
-  Item,
-  Input,
 } from 'native-base';
 
-const Register = ({navigation}) => {
+import {register} from '../../actions/auth';
+
+import RegisterForm from './components/RegisterForm';
+
+type CredsType = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+interface RegisterProps {
+  navigation: any;
+  register: (credentials: CredsType) => void;
+}
+
+const Register: FC<RegisterProps> = ({navigation, register}) => {
   const toggleDrawer = () => {
     navigation.openDrawer();
+  };
+
+  const onRegisterSubmit = (data: CredsType) => {
+    register(data);
   };
 
   return (
@@ -34,26 +50,10 @@ const Register = ({navigation}) => {
         <Right />
       </Header>
       <Content padder>
-        <Form>
-          <Item>
-            <Input placeholder="User name" />
-          </Item>
-          <Item>
-            <Input placeholder="Email" />
-          </Item>
-          <Item last>
-            <Input placeholder="Password" secureTextEntry={true} />
-          </Item>
-          <Item>
-            <Input placeholder="Confirm password" secureTextEntry={true} />
-          </Item>
-        </Form>
-        <Button block>
-          <Text>Sign Up</Text>
-        </Button>
+        <RegisterForm onSubmit={onRegisterSubmit} />
       </Content>
     </Container>
   );
 };
 
-export default Register;
+export default connect(null, {register})(Register);
