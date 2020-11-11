@@ -50,7 +50,7 @@ const LoginForm: FC<LoginFormProps> = ({onSubmit}) => {
     const isAllValid = checkFields();
     if (isAllValid) {
       const creds = {email, password};
-      console.log('handleLogin -> creds', creds);
+
       onSubmit(creds);
     }
   };

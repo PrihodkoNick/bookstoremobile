@@ -6,13 +6,10 @@ import {ACTION_TYPES} from './types';
 // Login User
 export const login = ({email, password}) => (dispatch) => {
   const body = JSON.stringify({email, password});
-  console.log('login -> body: ', body);
 
   loginUser(body)
     .then(async (res) => {
-      console.log(1);
       await AsyncStorage.setItem('token', res.data.token);
-      console.log(2);
 
       dispatch({
         type: ACTION_TYPES.loginSuccess,
@@ -20,16 +17,12 @@ export const login = ({email, password}) => (dispatch) => {
       });
 
       showToast('Login success', 'success');
-      console.log(123);
       dispatch(loadUser()); // load User after login
-      console.log(456);
       // dispatch(loadFavorites()); // load favorites after login
     })
     .catch(async (err) => {
-      console.log('e1');
       const errors = err.response.data.errors;
-      console.log('login -> errors: ', errors);
-      
+
       if (errors) {
         errors.forEach((error) => showToast(error.msg, 'danger'));
       }
