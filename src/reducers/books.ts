@@ -17,12 +17,9 @@ type BookActionType = {
 export default function (state = initialState, action: BookActionType) {
   const {type, payload} = action;
 
-  console.log('type: ', type);
-
   switch (type) {
     case ACTION_TYPES.loadBooks:
     case ACTION_TYPES.loadUserFavoritesBooks:
-      console.log('payload: ', payload);
       return {
         ...state,
         data: payload,

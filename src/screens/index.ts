@@ -2,5 +2,5 @@ export {default as Home} from './Home/Home';
 export {default as Login} from './Login/Login';
 export {default as Register} from './Register/Register';
 
-export {default as Profile} from './Profile/Profile';
+export {default as Profile} from './Profile';
 export {default as Favorites} from './Favorites/Favorites';

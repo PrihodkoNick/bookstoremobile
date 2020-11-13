@@ -4,10 +4,19 @@ import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import 'react-native-gesture-handler';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 import allReducers from './src/reducers';
 
-const store = createStore(allReducers, applyMiddleware(thunk));
+const middleware = [thunk];
+
+// const store = createStore(allReducers, applyMiddleware(thunk));
+
+const store = createStore(
+  allReducers,
+  {},
+  composeWithDevTools(applyMiddleware(...middleware)),
+);
 
 import App from './App';
 import {name as appName} from './app.json';
