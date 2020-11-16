@@ -12,7 +12,6 @@ import ViewShot from 'react-native-view-shot';
 import CameraRoll from '@react-native-community/cameraroll';
 
 import {logout} from '../../actions/auth';
-import HeaderApp from '../../components/Header/HeaderApp';
 
 interface FavoritesProps {
   navigation: any;
@@ -38,11 +37,6 @@ const Favorites: FC<FavoritesProps> = ({
 
   return (
     <Container>
-      <HeaderApp
-        navigation={navigation}
-        isAuthenticated={isAuthenticated}
-        logout={logout}
-      />
       <View style={styles.container}>
         <ViewShot
           style={styles.shotContainer}

@@ -1,15 +1,15 @@
 import React, {useState, FC} from 'react';
 import {NativeSyntheticEvent, TextInputChangeEventData} from 'react-native';
-import {Form, Item, Input, Button, Text} from 'native-base';
+import {Form, Text} from 'native-base';
 import {showToast} from '../../../utils/showToast';
 
-type CredsType = {
-  email: string;
-  password: string;
-};
+import Input from '../../../components/UI/Input';
+import Button from '../../../components/UI/Button';
+
+import {CredentialsType} from '../../../types';
 
 interface LoginFormProps {
-  onSubmit: (credentials: CredsType) => void;
+  onSubmit: (credentials: CredentialsType) => void;
 }
 
 const LoginForm: FC<LoginFormProps> = ({onSubmit}) => {
@@ -57,21 +57,23 @@ const LoginForm: FC<LoginFormProps> = ({onSubmit}) => {
 
   return (
     <Form>
-      <Item>
-        <Input
-          autoFocus
-          placeholder="Email Address"
-          onChange={(e) => handleChange(e, 'email')}
-        />
-      </Item>
-      <Item last>
-        <Input
-          placeholder="Password"
-          secureTextEntry={true}
-          onChange={(e) => handleChange(e, 'password')}
-        />
-      </Item>
-      <Button block onPress={handleLogin}>
+      <Input
+        placeHolder="Email Address"
+        name="email"
+        focused={true}
+        onHandleChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) =>
+          handleChange(e, 'email')
+        }
+      />
+      <Input
+        placeHolder="Password"
+        name="password"
+        type="password"
+        onHandleChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) =>
+          handleChange(e, 'password')
+        }
+      />
+      <Button onPress={handleLogin}>
         <Text>Sign In</Text>
       </Button>
     </Form>

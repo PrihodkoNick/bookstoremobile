@@ -6,24 +6,17 @@ import {Container, Content, Text} from 'native-base';
 import {logout} from '../../actions/auth';
 import {loadBooks} from '../../actions/books';
 
-import HeaderApp from '../../components/Header/HeaderApp';
 import BookCard from '../../components/BookCard';
 
+import {IAuth, IBooks} from '../../types';
+
 interface HomeProps {
-  navigation: any;
   isAuthenticated: boolean;
-  logout: () => void;
   loadBooks: (queryParams: string) => void;
-  books: any;
+  books: IBooks | any;
 }
 
-const Home: FC<HomeProps> = ({
-  navigation,
-  isAuthenticated,
-  logout,
-  loadBooks,
-  books,
-}) => {
+const Home: FC<HomeProps> = ({isAuthenticated, loadBooks, books}) => {
   useEffect(() => {
     loadBooks('');
   }, [loadBooks]);
@@ -34,11 +27,6 @@ const Home: FC<HomeProps> = ({
 
   return (
     <Container>
-      <HeaderApp
-        navigation={navigation}
-        isAuthenticated={isAuthenticated}
-        logout={logout}
-      />
       <Content padder>
         {books ? (
           <FlatList
@@ -54,7 +42,7 @@ const Home: FC<HomeProps> = ({
   );
 };
 
-const mapStateToProps = ({auth, books}: {auth: any; books: any}) => ({
+const mapStateToProps = ({auth, books}: {auth: IAuth; books: IBooks}) => ({
   isAuthenticated: auth.isAuthenticated,
   books: books?.data,
 });

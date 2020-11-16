@@ -6,7 +6,9 @@ import {NavigationContainer} from '@react-navigation/native';
 
 import {loadUser} from './src/actions/auth';
 
-import DrawerNavigator from './src/navigation/DrawNavigator/DrawNavigator';
+import DrawerNavigator from './src/navigation/DrawerNavigator/DrawerNavigator';
+
+import {IAuth} from './src/types';
 
 const getToken = async () => {
   return await AsyncStorage.getItem('token');
@@ -34,7 +36,7 @@ const App: FC<AppProps> = ({isAuthenticated, loadUser}) => {
   );
 };
 
-const mapStateToProps = ({auth}: {auth: any}) => ({
+const mapStateToProps = ({auth}: {auth: IAuth}) => ({
   isAuthenticated: auth.isAuthenticated,
 });
 

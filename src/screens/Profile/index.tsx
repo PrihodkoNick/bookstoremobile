@@ -2,12 +2,10 @@ import React, {FC, useState} from 'react';
 import {connect} from 'react-redux';
 
 import {Container, Text} from 'native-base';
-import {View, Image, Button, StyleSheet, TextInput, Pressable} from 'react-native';
+import {View, Image, Button, StyleSheet, TextInput} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 
 import {logout} from '../../actions/auth';
-
-import HeaderApp from '../../components/Header/HeaderApp';
 
 interface ProfileProps {
   navigation: any;
@@ -35,18 +33,9 @@ interface ProfileState {
   photo?: PhotoType;
 }
 
-const Profile: FC<ProfileProps> = ({
-  navigation,
-  isAuthenticated,
-  user,
-  logout
-}) => {
+const Profile: FC<ProfileProps> = ({user}) => {
   const [photo, setPhoto] = useState<ProfileState | {}>({});
-  const [about, setAbout] = useState<string | null>(null);
-
-  // const {
-  //   photo: {uri},
-  // } = photo;
+  const [about, setAbout] = useState<string | undefined>(undefined);
 
   const handleChoosePhoto = () => {
     const options = {
@@ -62,11 +51,6 @@ const Profile: FC<ProfileProps> = ({
 
   return (
     <Container>
-      <HeaderApp
-        navigation={navigation}
-        isAuthenticated={isAuthenticated}
-        logout={logout}
-      />
       <View style={styles.profileContainer}>
         <Text style={styles.greeting}>Welcome, {user.name}!</Text>
         <Image
@@ -77,12 +61,7 @@ const Profile: FC<ProfileProps> = ({
           }
           style={styles.image}
         />
-
-        <Button
-          style={styles.choosePhotoButton}
-          title="Choose Photo"
-          onPress={handleChoosePhoto}
-        />
+        <Button title="Choose Photo" onPress={handleChoosePhoto} />
         <View style={styles.aboutContainer}>
           <TextInput
             style={styles.about}
@@ -122,9 +101,6 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 150,
   },
-  choosePhotoButton: {
-    color: 'violet',
-  },
   aboutContainer: {
     flexDirection: 'row',
   },
@@ -132,10 +108,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     flex: 1,
     padding: 10,
-    height: 100,
+    maxHeight: 100,
+    fontSize: 16,
     borderWidth: 1,
     borderStyle: 'solid',
-    borderColor: 'violet',
+    borderColor: '#5c6bc0',
     borderRadius: 5,
   },
 });

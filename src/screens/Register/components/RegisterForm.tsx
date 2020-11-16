@@ -1,20 +1,15 @@
-import React, {useState, useRef, FC} from 'react';
-import {
-  NativeSyntheticEvent,
-  TextInputChangeEventData,
-  TextInput,
-} from 'react-native';
-import {Form, Item, Input, Button, Text} from 'native-base';
+import React, {useState, FC} from 'react';
+import {NativeSyntheticEvent, TextInputChangeEventData} from 'react-native';
+import {Form, Text} from 'native-base';
 import {showToast} from '../../../utils/showToast';
 
-type CredsType = {
-  name: string;
-  email: string;
-  password: string;
-};
+import Input from '../../../components/UI/Input';
+import Button from '../../../components/UI/Button';
+
+import {CredentialsType} from '../../../types';
 
 interface RegisterFormProps {
-  onSubmit: (credentials: CredsType) => void;
+  onSubmit: (credentials: CredentialsType) => void;
 }
 
 const RegisterForm: FC<RegisterFormProps> = ({onSubmit}) => {
@@ -24,8 +19,6 @@ const RegisterForm: FC<RegisterFormProps> = ({onSubmit}) => {
     password: '',
     password2: '',
   });
-
-  let refName = useRef<TextInput | null>(null);
 
   const {name, email, password, password2} = formData;
 
@@ -77,32 +70,38 @@ const RegisterForm: FC<RegisterFormProps> = ({onSubmit}) => {
 
   return (
     <Form>
-      <Item>
-        <Input
-          ref={refName}
-          autoFocus
-          placeholder="User name"
-          onChange={(e) => handleChange(e, 'name')}
-        />
-      </Item>
-      <Item>
-        <Input placeholder="Email" onChange={(e) => handleChange(e, 'email')} />
-      </Item>
-      <Item last>
-        <Input
-          placeholder="Password"
-          secureTextEntry={true}
-          onChange={(e) => handleChange(e, 'password')}
-        />
-      </Item>
-      <Item>
-        <Input
-          placeholder="Confirm password"
-          secureTextEntry={true}
-          onChange={(e) => handleChange(e, 'password2')}
-        />
-      </Item>
-      <Button block onPress={handleRegister}>
+      <Input
+        placeHolder="User name"
+        name="name"
+        focused={true}
+        onHandleChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) =>
+          handleChange(e, 'name')
+        }
+      />
+      <Input
+        placeHolder="Email Address"
+        name="email"
+        onHandleChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) =>
+          handleChange(e, 'email')
+        }
+      />
+      <Input
+        placeHolder="Password"
+        name="password"
+        type="password"
+        onHandleChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) =>
+          handleChange(e, 'password')
+        }
+      />
+      <Input
+        placeHolder="Confirm Password"
+        name="password2"
+        type="password"
+        onHandleChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) =>
+          handleChange(e, 'password2')
+        }
+      />
+      <Button onPress={handleRegister}>
         <Text>Sign Up</Text>
       </Button>
     </Form>
