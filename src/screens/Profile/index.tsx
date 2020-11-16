@@ -2,10 +2,12 @@ import React, {FC, useState} from 'react';
 import {connect} from 'react-redux';
 
 import {Container, Text} from 'native-base';
-import {View, Image, Button, StyleSheet, TextInput} from 'react-native';
+import {View, Image, StyleSheet, TextInput} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 
 import {logout} from '../../actions/auth';
+
+import Button from '../../components/UI/Button';
 
 interface ProfileProps {
   navigation: any;
@@ -61,7 +63,9 @@ const Profile: FC<ProfileProps> = ({user}) => {
           }
           style={styles.image}
         />
-        <Button title="Choose Photo" onPress={handleChoosePhoto} />
+        <Button isTranspared onPress={handleChoosePhoto}>
+          <Text style={styles.text}>Choose Photo</Text>
+        </Button>
         <View style={styles.aboutContainer}>
           <TextInput
             style={styles.about}
@@ -99,7 +103,12 @@ const styles = StyleSheet.create({
   image: {
     width: 150,
     height: 150,
+    borderWidth: 1,
+    borderColor: '#5c6bc0',
     borderRadius: 150,
+  },
+  button: {
+    textDecorationColor: 'red',
   },
   aboutContainer: {
     flexDirection: 'row',
@@ -114,6 +123,10 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderColor: '#5c6bc0',
     borderRadius: 5,
+  },
+  text: {
+    color: '#5c6bc0',
+    fontWeight: '700',
   },
 });
 
