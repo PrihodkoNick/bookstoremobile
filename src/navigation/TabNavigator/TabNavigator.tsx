@@ -5,6 +5,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {Home, Login, Register, Profile, Favorites} from '../../screens';
 
+import {IAuth} from '../../types';
+
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = ({isAuthenticated}: {isAuthenticated: boolean}) => {
@@ -51,7 +53,7 @@ const BottomTabNavigator = ({isAuthenticated}: {isAuthenticated: boolean}) => {
   );
 };
 
-const mapStateToProps = ({auth}: {auth: any}) => ({
+const mapStateToProps = ({auth}: {auth: IAuth}) => ({
   isAuthenticated: auth.isAuthenticated,
 });
 

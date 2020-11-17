@@ -1,10 +1,16 @@
+export type ImageType = {
+  fileName?: string;
+  type?: string;
+  uri: string;
+};
+
 export type CredentialsType = {
   name?: string;
   email: string;
   password: string;
 };
 
-type UserType = {
+export type UserType = {
   id: string;
   name: string;
   email: string;

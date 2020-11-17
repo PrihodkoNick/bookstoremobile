@@ -13,6 +13,8 @@ import CameraRoll from '@react-native-community/cameraroll';
 
 import {logout} from '../../actions/auth';
 
+import {IAuth} from '../../types';
+
 interface FavoritesProps {
   navigation: any;
   isAuthenticated: boolean;
@@ -57,7 +59,7 @@ const Favorites: FC<FavoritesProps> = ({
   );
 };
 
-const mapStateToProps = ({auth}: {auth: any}) => ({
+const mapStateToProps = ({auth}: {auth: IAuth}) => ({
   isAuthenticated: auth.isAuthenticated,
 });
 

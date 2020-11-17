@@ -1,4 +1,4 @@
-import {loginUser, getUser, registerUser} from '../api/auth';
+import {loginUser, getUser, registerUser, editUser} from '../api/auth';
 import AsyncStorage from '@react-native-community/async-storage';
 import {showToast} from '../utils/showToast';
 import {ACTION_TYPES} from './types';
@@ -90,4 +90,23 @@ export const register = ({name, email, password}) => (dispatch) => {
 // Logout
 export const logout = () => (dispatch) => {
   dispatch({type: ACTION_TYPES.logOut});
+};
+
+// Update User
+export const updateUser = (data: any) => (dispatch) => {
+  editUser(data)
+    .then((res) => {
+      dispatch({
+        type: ACTION_TYPES.updateUser,
+        payload: res.data,
+      });
+
+      showToast('User updated', 'success');
+    })
+    .catch((err) => {
+      const errors = err.response.data.errors;
+      if (errors) {
+        errors.forEach((error) => showToast(error.msg, 'danger'));
+      }
+    });
 };

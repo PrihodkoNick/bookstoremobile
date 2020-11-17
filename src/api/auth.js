@@ -11,3 +11,7 @@ export const loginUser = async (body) => {
 export const registerUser = async (body) => {
   return await api.post('/api/users', body);
 };
+
+export const editUser = async (body) => {
+  return await api.patch('/api/users', body);
+};

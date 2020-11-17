@@ -27,22 +27,25 @@ const BookCard: FC<BookCardProps> = ({item, isAuthenticated}) => {
   };
 
   return (
-    <Card onTouchEnd={(e) => handlePress(e)}>
+    <Card>
       <CardItem>
-        <Body style={styles.container}>
-          <Image
-            style={styles.cover}
-            source={
-              cover
-                ? {uri: `http://localhost:5000${cover}`}
-                : require('../../assets/img/book-cover.png')
-            }
-          />
-          <View style={styles.info}>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.author}>{author}</Text>
-          </View>
+        <Body>
+          <Pressable style={styles.container} onPress={handlePress}>
+            <Image
+              style={styles.cover}
+              source={
+                cover
+                  ? {uri: `http://localhost:5000${cover}`}
+                  : require('../../assets/img/book-cover.png')
+              }
+            />
+            <View style={styles.info}>
+              <Text style={styles.title}>{title}</Text>
+              <Text style={styles.author}>{author}</Text>
+            </View>
+          </Pressable>
         </Body>
+
       </CardItem>
       <CardItem footer style={styles.footer}>
         <Text>{price} $</Text>
