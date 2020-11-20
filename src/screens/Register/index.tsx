@@ -14,9 +14,6 @@ interface RegisterProps {
 
 const Register: FC<RegisterProps> = ({register}) => {
   const onRegisterSubmit = (data: CredentialsType) => {
-    console.log('onRegisterSubmit -> data:', data);
-    console.log(typeof data);
-
     register(data);
   };
 

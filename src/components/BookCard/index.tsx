@@ -45,7 +45,6 @@ const BookCard: FC<BookCardProps> = ({item, isAuthenticated}) => {
             </View>
           </Pressable>
         </Body>
-
       </CardItem>
       <CardItem footer style={styles.footer}>
         <Text>{price} $</Text>

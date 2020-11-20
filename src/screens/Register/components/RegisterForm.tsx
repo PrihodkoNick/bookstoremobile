@@ -1,111 +1,134 @@
-import React, {useState, FC} from 'react';
-import {NativeSyntheticEvent, TextInputChangeEventData} from 'react-native';
-import {Form, Text} from 'native-base';
-import {showToast} from '../../../utils/showToast';
+import React, {FC} from 'react';
+import {View, StyleSheet} from 'react-native';
+import {Text} from 'native-base';
+import {Formik, ErrorMessage} from 'formik';
 
-import Input from '../../../components/UI/Input';
-import Button from '../../../components/UI/Button';
-
-import {CredentialsType} from '../../../types';
+import {
+  Input,
+  Button,
+  InputErrorText,
+  InputLabel,
+} from '../../../components/UI';
 
 interface RegisterFormProps {
-  onSubmit: (credentials: CredentialsType) => void;
+  onSubmit: (values: any) => void;
 }
 
+type RegisterFormValues = {
+  name?: string;
+  email?: string;
+  password?: string;
+  password2?: string;
+};
+
 const RegisterForm: FC<RegisterFormProps> = ({onSubmit}) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    password2: '',
-  });
+  const initialValues = {name: '', email: '', password: '', password2: ''};
 
-  const {name, email, password, password2} = formData;
-
-  const handleChange = (
-    e: NativeSyntheticEvent<TextInputChangeEventData>,
-    inputName: string,
-  ) => {
-    setFormData({...formData, [inputName]: e.nativeEvent.text});
+  const handleSubmitForm = (values: RegisterFormValues) => {
+    onSubmit(values);
   };
 
-  const checkFields = () => {
-    let isValid = true;
+  const handleValidate = (values: RegisterFormValues) => {
+    const errors: RegisterFormValues = {};
 
-    if (name.trim().length === 0) {
-      showToast('Please enter a valid name', 'danger');
-
-      return false;
+    if (!values.name) {
+      errors.name = 'Required';
     }
 
-    const emailValid = email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-    if (!emailValid) {
-      showToast('Please enter a valid email', 'danger');
-
-      return false;
+    if (!values.email) {
+      errors.email = 'Required';
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+      errors.email = 'Invalid email address';
     }
 
-    if (password.length < 6) {
-      showToast('Please enter a password with 6 or more characters', 'danger');
-
-      return false;
+    if (!values.password) {
+      errors.password = 'Required';
+    } else if (values.password.length < 6) {
+      errors.password = 'Please enter a password with 6 or more characters';
     }
 
-    if (password !== password2) {
-      showToast('Passwords do not match', 'danger');
-
-      return false;
+    if (!values.password2) {
+      errors.password2 = 'Required';
+    } else if (values.password !== values.password2) {
+      errors.password2 = 'Passwords do not match';
     }
 
-    return isValid;
-  };
-
-  const handleRegister = () => {
-    const isAllValid = checkFields();
-    if (isAllValid) {
-      const credentials = {name, email, password};
-      onSubmit(credentials);
-    }
+    return errors;
   };
 
   return (
-    <Form>
-      <Input
-        placeHolder="User name"
-        name="name"
-        focused={true}
-        onHandleChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) =>
-          handleChange(e, 'name')
-        }
-      />
-      <Input
-        placeHolder="Email Address"
-        name="email"
-        onHandleChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) =>
-          handleChange(e, 'email')
-        }
-      />
-      <Input
-        placeHolder="Password"
-        name="password"
-        type="password"
-        onHandleChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) =>
-          handleChange(e, 'password')
-        }
-      />
-      <Input
-        placeHolder="Confirm Password"
-        name="password2"
-        type="password"
-        onHandleChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) =>
-          handleChange(e, 'password2')
-        }
-      />
-      <Button onPress={handleRegister}>
-        <Text>Sign Up</Text>
-      </Button>
-    </Form>
+    <Formik
+      initialValues={initialValues}
+      validate={(values) => handleValidate(values)}
+      onSubmit={(values) => handleSubmitForm(values)}>
+      {({handleChange, handleSubmit, values}) => (
+        <View>
+          <View style={styles.inputContainer}>
+            <InputLabel label="User name" />
+            <ErrorMessage
+              name="name"
+              render={(msg) => <InputErrorText>{msg}</InputErrorText>}
+            />
+            <Input
+              focused={true}
+              placeHolder="name"
+              onChangeText={handleChange('name')}
+              value={values.name}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <InputLabel label="Email" />
+            <ErrorMessage
+              name="email"
+              render={(msg) => <InputErrorText>{msg}</InputErrorText>}
+            />
+            <Input
+              placeHolder="email"
+              onChangeText={handleChange('email')}
+              value={values.email}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <InputLabel label="Password" />
+            <ErrorMessage
+              name="password"
+              render={(msg) => <InputErrorText>{msg}</InputErrorText>}
+            />
+            <Input
+              type="password"
+              placeHolder="password"
+              onChangeText={handleChange('password')}
+              value={values.password}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <InputLabel label="Confirm password" />
+            <ErrorMessage
+              name="password2"
+              render={(msg) => <InputErrorText>{msg}</InputErrorText>}
+            />
+            <Input
+              type="password2"
+              placeHolder="password2"
+              onChangeText={handleChange('password2')}
+              value={values.password2}
+            />
+          </View>
+          <Button onPress={handleSubmit}>
+            <Text>Submit</Text>
+          </Button>
+        </View>
+      )}
+    </Formik>
   );
 };
+
+const styles = StyleSheet.create({
+  inputContainer: {
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+});
 
 export default RegisterForm;

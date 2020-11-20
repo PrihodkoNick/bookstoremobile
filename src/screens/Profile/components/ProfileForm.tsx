@@ -1,6 +1,7 @@
 import React, {useState, FC} from 'react';
 import {Text, Form} from 'native-base';
 import {View, Image, StyleSheet, TextInput} from 'react-native';
+// import FastImage from 'react-native-fast-image';
 import ImagePicker from 'react-native-image-picker';
 
 import Button from '../../../components/UI/Button';
@@ -48,16 +49,22 @@ const ProfileForm: FC<ProfileFormProps> = ({user, onSubmit}) => {
 
   return (
     <Form style={styles.form}>
+      {/* <FastImage
+        source={
+          photo.uri ? {uri: photo.uri} : require('../../../assets/img/user.png')
+        }
+        style={styles.image}
+      /> */}
       <Image
         source={
           photo.uri ? {uri: photo.uri} : require('../../../assets/img/user.png')
         }
         style={styles.image}
       />
-      <Button isTranspared onPress={handleChoosePhoto}>
+      <Button isTransparent onPress={handleChoosePhoto}>
         <Text style={styles.text}>Choose Photo</Text>
       </Button>
-      <Button isTranspared onPress={handleTakePhoto}>
+      <Button isTransparent onPress={handleTakePhoto}>
         <Text style={styles.text}>Take a Photo</Text>
       </Button>
       <View style={styles.aboutContainer}>

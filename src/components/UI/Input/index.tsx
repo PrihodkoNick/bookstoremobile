@@ -1,31 +1,24 @@
 import React, {FC, useState} from 'react';
-import {
-  TextInput,
-  StyleSheet,
-  NativeSyntheticEvent,
-  TextInputChangeEventData,
-} from 'react-native';
+import {TextInput, StyleSheet} from 'react-native';
 
 interface InputProps {
   placeHolder: string;
-  name: string;
   type?: string;
   focused?: boolean;
-  onHandleChange: (
-    e: NativeSyntheticEvent<TextInputChangeEventData>,
-    name: string,
-  ) => void;
+  value: string;
+  onChangeText: (e: string) => void;
 }
 
 const Input: FC<InputProps> = ({
   placeHolder,
-  name,
   type,
+  value,
   focused,
-  onHandleChange,
+  onChangeText,
 }) => {
   const autoFocusProp = focused ? {autoFocus: true} : null;
   const inputType = type ? {secureTextEntry: true} : null;
+
   const [style, setStyle] = useState(styles.input_unfocused);
 
   const handleBlur = () => {
@@ -40,10 +33,12 @@ const Input: FC<InputProps> = ({
     <TextInput
       autoCapitalize="none"
       placeholder={placeHolder}
-      onChange={(e) => onHandleChange(e, name)}
+      value={value}
+      onChangeText={onChangeText}
       onBlur={handleBlur}
       onFocus={handleFocus}
       style={[styles.input, style]}
+      keyboardType="numeric"
       {...autoFocusProp}
       {...inputType}
     />
@@ -58,6 +53,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: 'solid',
     borderRadius: 6,
+    width: '100%',
   },
   input_focused: {
     borderColor: '#5c6bc0',

@@ -1,83 +1,97 @@
-import React, {useState, FC} from 'react';
-import {NativeSyntheticEvent, TextInputChangeEventData} from 'react-native';
-import {Form, Text} from 'native-base';
-import {showToast} from '../../../utils/showToast';
+import React, {FC} from 'react';
+import {View, StyleSheet} from 'react-native';
+import {Text} from 'native-base';
+import {Formik, ErrorMessage} from 'formik';
 
-import Input from '../../../components/UI/Input';
-import Button from '../../../components/UI/Button';
+import {
+  Input,
+  Button,
+  InputErrorText,
+  InputLabel,
+} from '../../../components/UI';
 
 import {CredentialsType} from '../../../types';
 
 interface LoginFormProps {
-  onSubmit: (credentials: CredentialsType) => void;
+  onSubmit: (values: CredentialsType) => void;
 }
 
+type LoginFormValues = {
+  email?: string;
+  password?: string;
+};
+
 const LoginForm: FC<LoginFormProps> = ({onSubmit}) => {
-  const [credentials, setCredentials] = useState({
-    email: '',
-    password: '',
-  });
+  const initialValues = {email: '', password: ''};
 
-  const {email, password} = credentials;
-
-  const handleChange = (
-    e: NativeSyntheticEvent<TextInputChangeEventData>,
-    inputName: string,
-  ) => {
-    setCredentials({...credentials, [inputName]: e.nativeEvent.text});
+  const handleSubmitForm = (values: CredentialsType) => {
+    onSubmit(values);
   };
 
-  const checkFields = () => {
-    let isValid = true;
+  const handleValidate = (values: CredentialsType) => {
+    const errors: LoginFormValues = {};
 
-    const emailValid = email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-    if (!emailValid) {
-      showToast('Please enter a valid email', 'danger');
-
-      isValid = false;
+    if (!values.email) {
+      errors.email = 'Required';
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+      errors.email = 'Invalid email address';
     }
 
-    if (password.length < 6) {
-      showToast('Please enter a password with 6 or more characters', 'danger');
-
-      isValid = false;
+    if (!values.password) {
+      errors.password = 'Required';
     }
 
-    return isValid;
-  };
-
-  const handleLogin = () => {
-    const isAllValid = checkFields();
-    if (isAllValid) {
-      const creds = {email, password};
-
-      onSubmit(creds);
-    }
+    return errors;
   };
 
   return (
-    <Form>
-      <Input
-        placeHolder="Email Address"
-        name="email"
-        focused={true}
-        onHandleChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) =>
-          handleChange(e, 'email')
-        }
-      />
-      <Input
-        placeHolder="Password"
-        name="password"
-        type="password"
-        onHandleChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) =>
-          handleChange(e, 'password')
-        }
-      />
-      <Button onPress={handleLogin}>
-        <Text>Sign In</Text>
-      </Button>
-    </Form>
+    <Formik
+      initialValues={initialValues}
+      validate={(values) => handleValidate(values)}
+      onSubmit={(values) => handleSubmitForm(values)}>
+      {({handleChange, handleSubmit, values}) => (
+        <View>
+          <View style={styles.inputContainer}>
+            <InputLabel label="Email" />
+            <ErrorMessage
+              name="email"
+              render={(msg) => <InputErrorText>{msg}</InputErrorText>}
+            />
+            <Input
+              focused={true}
+              placeHolder="email"
+              onChangeText={handleChange('email')}
+              value={values.email}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <InputLabel label="Password" />
+            <ErrorMessage
+              name="password"
+              render={(msg) => <InputErrorText>{msg}</InputErrorText>}
+            />
+            <Input
+              type="password"
+              placeHolder="password"
+              onChangeText={handleChange('password')}
+              value={values.password}
+            />
+          </View>
+          <Button onPress={handleSubmit}>
+            <Text>Submit</Text>
+          </Button>
+        </View>
+      )}
+    </Formik>
   );
 };
+
+const styles = StyleSheet.create({
+  inputContainer: {
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+});
 
 export default LoginForm;

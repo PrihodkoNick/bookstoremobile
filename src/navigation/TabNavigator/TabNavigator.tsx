@@ -3,7 +3,14 @@ import {connect} from 'react-redux';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import {Home, Login, Register, Profile, Favorites} from '../../screens';
+import {
+  Home,
+  Login,
+  Register,
+  Profile,
+  Favorites,
+  AddBook,
+} from '../../screens';
 
 import {IAuth} from '../../types';
 
@@ -27,6 +34,8 @@ const BottomTabNavigator = ({isAuthenticated}: {isAuthenticated: boolean}) => {
             iconName = focused ? 'person' : 'person-outline';
           } else if (route.name === 'Favorites') {
             iconName = focused ? 'heart' : 'heart-outline';
+          } else if (route.name === 'Add book') {
+            iconName = focused ? 'add-circle' : 'add-circle-outline';
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -41,6 +50,7 @@ const BottomTabNavigator = ({isAuthenticated}: {isAuthenticated: boolean}) => {
           <Tab.Screen name="Home" component={Home} />
           <Tab.Screen name="Profile" component={Profile} />
           <Tab.Screen name="Favorites" component={Favorites} />
+          <Tab.Screen name="Add book" component={AddBook} />
         </>
       ) : (
         <>

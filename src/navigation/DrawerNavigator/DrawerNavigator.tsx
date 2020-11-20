@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {logout} from '../../actions/auth';
 
 import TabNavigator from '../TabNavigator/TabNavigator';
-import {Login, Register, Profile, Favorites} from '../../screens';
+import {Login, Register, Profile, Favorites, AddBook} from '../../screens';
 
 interface DrawerNavigatorProps {
   isAuthenticated: boolean;
@@ -61,6 +61,7 @@ const DrawerNavigator: FC<DrawerNavigatorProps> = ({
         <>
           <Drawer.Screen name="Profile" component={Profile} />
           <Drawer.Screen name="Favorites" component={Favorites} />
+          <Drawer.Screen name="AddBook" component={AddBook} />
         </>
       ) : (
         <>

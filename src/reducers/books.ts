@@ -12,7 +12,7 @@ const initialState = {
 type BookActionType = {
   type: string;
   payload: any;
-}
+};
 
 export default function (state = initialState, action: BookActionType) {
   const {type, payload} = action;
@@ -27,17 +27,17 @@ export default function (state = initialState, action: BookActionType) {
         error: null,
       };
 
-    // case ACTION_TYPES.addBook:
-    //   return {
-    //     ...state,
-    //     data: [...state.data, payload]
-    //   };
+    case ACTION_TYPES.bookAdd:
+      return {
+        ...state,
+        data: [...state.data, payload],
+      };
 
-    // case ACTION_TYPES.loadCategories:
-    //   return {
-    //     ...state,
-    //     categories: payload,
-    //   };
+    case ACTION_TYPES.loadCategories:
+      return {
+        ...state,
+        categories: payload,
+      };
 
     // case ACTION_TYPES.loadAuthors:
     //   return {

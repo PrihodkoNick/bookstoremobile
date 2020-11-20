@@ -4,15 +4,15 @@ import {Button} from 'native-base';
 
 interface CustomButtonProps {
   onPress: () => void;
-  isTranspared?: boolean;
+  isTransparent?: boolean;
 }
 
 const CustomButton: FC<CustomButtonProps> = ({
   children,
-  isTranspared,
+  isTransparent,
   onPress,
 }) => {
-  const transparent = isTranspared ? styles.button_transparent : null;
+  const transparent = isTransparent ? styles.button_transparent : null;
 
   return (
     <Button block style={[styles.button, transparent]} onPress={onPress}>
