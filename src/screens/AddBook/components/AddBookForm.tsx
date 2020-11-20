@@ -17,6 +17,7 @@ type AddBookFormValues = {
   description?: string;
   fragment?: string;
   price?: string;
+  categoryId?: string;
 };
 
 type Category = {
@@ -38,11 +39,16 @@ const AddBookForm: FC<AddBookFormProps> = ({categories, onSubmit}) => {
     description: '',
     fragment: '',
     price: '',
+    categoryId: '',
   };
 
   const handleSubmitForm = (values: AddBookFormValues, actions: any) => {
-    onSubmit(values);
+    const formValues = values;
+    values.categoryId = category;
+
+    onSubmit(formValues);
     actions.resetForm({});
+    setCategory(categories[0].value);
   };
 
   const handleValidate = (values: AddBookFormValues) => {
