@@ -1,10 +1,11 @@
 import {getBooks, getCategories, createBook} from '../api/books';
 import {showToast} from '../utils/showToast';
 import {ACTION_TYPES} from './types';
+import {AppThunk} from '../types';
 
 // loadBooks
-export const loadBooks = (queryParams?: string | null) => async (
-  dispatch: any,
+export const loadBooks = (queryParams?: string | null): AppThunk => async (
+  dispatch,
 ) => {
   try {
     const res = await getBooks(queryParams);
@@ -23,7 +24,7 @@ export const loadBooks = (queryParams?: string | null) => async (
 };
 
 // get categories
-export const loadCategories = () => async (dispatch: any) => {
+export const loadCategories = (): AppThunk => async (dispatch) => {
   try {
     const res = await getCategories();
 
@@ -41,10 +42,8 @@ export const loadCategories = () => async (dispatch: any) => {
 };
 
 // add book
-export const addBook = (data: any) => async (dispatch: any) => {
-  console.log(456);
+export const addBook = (data: any): AppThunk => async (dispatch) => {
   const body = JSON.stringify({data});
-  console.log('addBook -> body:', body);
 
   try {
     const res = await createBook(body);

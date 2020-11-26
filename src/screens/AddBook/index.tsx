@@ -18,7 +18,6 @@ interface AddBookProps {
 
 const AddBook: FC<AddBookProps> = ({categories, addBook}) => {
   const handleSubmit = (values: AddBookFormValues) => {
-    console.log(123);
     addBook(values);
   };
 

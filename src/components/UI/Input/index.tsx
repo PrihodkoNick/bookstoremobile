@@ -3,7 +3,7 @@ import {TextInput, StyleSheet} from 'react-native';
 
 interface InputProps {
   placeHolder: string;
-  type?: string;
+  secureField?: boolean;
   focused?: boolean;
   value: string;
   onChangeText: (e: string) => void;
@@ -11,14 +11,15 @@ interface InputProps {
 
 const Input: FC<InputProps> = ({
   placeHolder,
-  type,
+  secureField,
   value,
   focused,
   onChangeText,
 }) => {
-  const autoFocusProp = focused ? {autoFocus: true} : null;
-  const inputType = type ? {secureTextEntry: true} : null;
-
+  const inputProps = {
+    autoFocus: focused,
+    secureTextEntry: secureField,
+  };
   const [style, setStyle] = useState(styles.input_unfocused);
 
   const handleBlur = () => {
@@ -31,6 +32,7 @@ const Input: FC<InputProps> = ({
 
   return (
     <TextInput
+      {...inputProps}
       autoCapitalize="none"
       placeholder={placeHolder}
       value={value}
@@ -38,9 +40,6 @@ const Input: FC<InputProps> = ({
       onBlur={handleBlur}
       onFocus={handleFocus}
       style={[styles.input, style]}
-      keyboardType="numeric"
-      {...autoFocusProp}
-      {...inputType}
     />
   );
 };

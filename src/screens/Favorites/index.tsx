@@ -29,10 +29,7 @@ const Favorites: FC<FavoritesProps> = ({
   const viewShot = useRef<any>();
 
   const takeScreenShot = () => {
-    console.log(viewShot);
-
     viewShot.current.capture().then((uri: string) => {
-      console.log('do something with ', uri);
       CameraRoll.save(uri);
     });
   };

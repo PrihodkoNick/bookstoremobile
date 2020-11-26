@@ -10,6 +10,7 @@ import {
   InputLabel,
   InputErrorText,
 } from '../../../components/UI';
+import InputNumber from '../../../components/UI/InputNumber';
 
 type AddBookFormValues = {
   title?: string;
@@ -64,6 +65,8 @@ const AddBookForm: FC<AddBookFormProps> = ({categories, onSubmit}) => {
 
     if (!values.price) {
       errors.price = 'Required';
+    } else if (/\D/g.test(values.price)) {
+      errors.price = 'Invalid price';
     }
 
     return errors;
@@ -86,6 +89,7 @@ const AddBookForm: FC<AddBookFormProps> = ({categories, onSubmit}) => {
               placeHolder="title"
               onChangeText={handleChange('title')}
               value={values.title}
+              focused
             />
           </View>
           <View style={styles.inputContainer}>

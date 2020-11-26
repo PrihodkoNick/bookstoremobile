@@ -1,10 +1,18 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {loginUser, getUser, registerUser, editUser} from '../api/auth';
-import AsyncStorage from '@react-native-community/async-storage';
 import {showToast} from '../utils/showToast';
 import {ACTION_TYPES} from './types';
+import {AppThunk} from '../types';
 
 // Login User
-export const login = ({email, password}) => (dispatch) => {
+export const login = ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}): AppThunk => (dispatch) => {
   const body = JSON.stringify({email, password});
 
   loginUser(body)
@@ -34,8 +42,23 @@ export const login = ({email, password}) => (dispatch) => {
     });
 };
 
+// reloadUser
+export const reloadUser = (token: string): AppThunk => (dispatch) => {
+  try {
+    dispatch({
+      type: ACTION_TYPES.loginSuccess,
+      payload: token,
+    });
+
+    // dispatch(loadUser());
+    showToast('Login success', 'success');
+  } catch (error) {
+    showToast(error.msg, 'danger');
+  }
+};
+
 // Load User
-export const loadUser = () => async (dispatch) => {
+export const loadUser = (): AppThunk => async (dispatch) => {
   getUser()
     .then((res) => {
       dispatch({
@@ -58,7 +81,15 @@ export const loadUser = () => async (dispatch) => {
 };
 
 // Register User
-export const register = ({name, email, password}) => (dispatch) => {
+export const register = ({
+  name,
+  email,
+  password,
+}: {
+  name: string;
+  email: string;
+  password: string;
+}): AppThunk => (dispatch) => {
   const body = JSON.stringify({name, email, password});
 
   registerUser(body)
@@ -88,12 +119,12 @@ export const register = ({name, email, password}) => (dispatch) => {
 };
 
 // Logout
-export const logout = () => (dispatch) => {
+export const logout = (): AppThunk => (dispatch) => {
   dispatch({type: ACTION_TYPES.logOut});
 };
 
 // Update User
-export const updateUser = (data: any) => (dispatch) => {
+export const updateUser = (data: any): AppThunk => (dispatch) => {
   editUser(data)
     .then((res) => {
       dispatch({

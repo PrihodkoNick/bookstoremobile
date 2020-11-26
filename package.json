@@ -11,7 +11,7 @@
     "native": "react-native"
   },
   "dependencies": {
-    "@react-native-community/async-storage": "^1.12.1",
+    "@react-native-async-storage/async-storage": "^1.13.2",
     "@react-native-community/cameraroll": "^4.0.1",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/bottom-tabs": "^5.11.0",
@@ -26,6 +26,7 @@
     "react-native": "0.63.2",
     "react-native-dropdown-picker": "^3.7.1",
     "react-native-fast-image": "^8.3.4",
+    "react-native-fingerprint-scanner": "^6.0.0",
     "react-native-gesture-handler": "^1.7.0",
     "react-native-image-picker": "^2.3.4",
     "react-native-qrcode-generator": "^1.2.2",

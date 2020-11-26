@@ -1,3 +1,8 @@
+import {Action} from 'redux';
+import {ThunkAction} from 'redux-thunk';
+
+import {RootState} from '../reducers';
+
 export type ImageType = {
   fileName?: string;
   type?: string;
@@ -43,3 +48,10 @@ export interface IBooks {
   authors: string;
   favorites: string;
 }
+
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootState,
+  unknown,
+  Action<string>
+>;

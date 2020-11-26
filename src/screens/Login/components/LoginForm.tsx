@@ -45,48 +45,53 @@ const LoginForm: FC<LoginFormProps> = ({onSubmit}) => {
   };
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validate={(values) => handleValidate(values)}
-      onSubmit={(values) => handleSubmitForm(values)}>
-      {({handleChange, handleSubmit, values}) => (
-        <View>
-          <View style={styles.inputContainer}>
-            <InputLabel label="Email" />
-            <ErrorMessage
-              name="email"
-              render={(msg) => <InputErrorText>{msg}</InputErrorText>}
-            />
-            <Input
-              focused={true}
-              placeHolder="email"
-              onChangeText={handleChange('email')}
-              value={values.email}
-            />
+    <View style={styles.formContainer}>
+      <Formik
+        initialValues={initialValues}
+        validate={(values) => handleValidate(values)}
+        onSubmit={(values) => handleSubmitForm(values)}>
+        {({handleChange, handleSubmit, values}) => (
+          <View>
+            <View style={styles.inputContainer}>
+              <InputLabel label="Email" />
+              <ErrorMessage
+                name="email"
+                render={(msg) => <InputErrorText>{msg}</InputErrorText>}
+              />
+              <Input
+                focused
+                placeHolder="email"
+                onChangeText={handleChange('email')}
+                value={values.email}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <InputLabel label="Password" />
+              <ErrorMessage
+                name="password"
+                render={(msg) => <InputErrorText>{msg}</InputErrorText>}
+              />
+              <Input
+                secureField
+                placeHolder="password"
+                onChangeText={handleChange('password')}
+                value={values.password}
+              />
+            </View>
+            <Button onPress={handleSubmit}>
+              <Text>Submit</Text>
+            </Button>
           </View>
-          <View style={styles.inputContainer}>
-            <InputLabel label="Password" />
-            <ErrorMessage
-              name="password"
-              render={(msg) => <InputErrorText>{msg}</InputErrorText>}
-            />
-            <Input
-              type="password"
-              placeHolder="password"
-              onChangeText={handleChange('password')}
-              value={values.password}
-            />
-          </View>
-          <Button onPress={handleSubmit}>
-            <Text>Submit</Text>
-          </Button>
-        </View>
-      )}
-    </Formik>
+        )}
+      </Formik>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  formContainer: {
+    marginBottom: 30,
+  },
   inputContainer: {
     flexWrap: 'wrap',
     justifyContent: 'space-between',

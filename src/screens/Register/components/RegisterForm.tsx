@@ -70,7 +70,7 @@ const RegisterForm: FC<RegisterFormProps> = ({onSubmit}) => {
               render={(msg) => <InputErrorText>{msg}</InputErrorText>}
             />
             <Input
-              focused={true}
+              focused
               placeHolder="name"
               onChangeText={handleChange('name')}
               value={values.name}
@@ -95,7 +95,7 @@ const RegisterForm: FC<RegisterFormProps> = ({onSubmit}) => {
               render={(msg) => <InputErrorText>{msg}</InputErrorText>}
             />
             <Input
-              type="password"
+              secureField
               placeHolder="password"
               onChangeText={handleChange('password')}
               value={values.password}
@@ -108,7 +108,7 @@ const RegisterForm: FC<RegisterFormProps> = ({onSubmit}) => {
               render={(msg) => <InputErrorText>{msg}</InputErrorText>}
             />
             <Input
-              type="password2"
+              secureField
               placeHolder="password2"
               onChangeText={handleChange('password2')}
               value={values.password2}
