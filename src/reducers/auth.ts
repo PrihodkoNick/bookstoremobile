@@ -1,14 +1,23 @@
 import {ACTION_TYPES} from '../actions/types';
-import AsyncStorage from '@react-native-community/async-storage';
 
-const initialState = {
-  token: AsyncStorage.getItem('token'),
+type State = {
+  token: string | null;
+  user: string | null;
+  isAuthenticated: boolean;
+  loading: boolean;
+};
+
+const initialState: State = {
+  token: null,
   user: null,
-  isAuthenticated: null,
+  isAuthenticated: false,
   loading: false,
 };
 
-export default function (state = initialState, action) {
+// export type Actions = 
+//   | {type: typeof registerSuccess, id: string};
+
+export default function (state: State = initialState, action: any): State {
   const {type, payload} = action;
 
   switch (type) {

@@ -1,8 +1,10 @@
 import React, {FC, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from 'native-base';
-import {Formik, ErrorMessage} from 'formik';
+import {Formik, ErrorMessage, FormikHelpers} from 'formik';
 import DropDownPicker from 'react-native-dropdown-picker';
+
+import {AddBookFormValues} from '../../../types';
 
 import {
   Input,
@@ -10,20 +12,16 @@ import {
   InputLabel,
   InputErrorText,
 } from '../../../components/UI';
-import InputNumber from '../../../components/UI/InputNumber';
-
-type AddBookFormValues = {
-  title?: string;
-  author?: string;
-  description?: string;
-  fragment?: string;
-  price?: string;
-  categoryId?: string;
-};
 
 type Category = {
   label: string;
   value: string;
+};
+
+type ErrorFieldsMessagesType = {
+  title?: string;
+  author?: string;
+  price?: string;
 };
 
 interface AddBookFormProps {
@@ -43,7 +41,10 @@ const AddBookForm: FC<AddBookFormProps> = ({categories, onSubmit}) => {
     categoryId: '',
   };
 
-  const handleSubmitForm = (values: AddBookFormValues, actions: any) => {
+  const handleSubmitForm = (
+    values: AddBookFormValues,
+    actions: FormikHelpers<AddBookFormValues>,
+  ) => {
     const formValues = values;
     values.categoryId = category;
 
@@ -53,7 +54,7 @@ const AddBookForm: FC<AddBookFormProps> = ({categories, onSubmit}) => {
   };
 
   const handleValidate = (values: AddBookFormValues) => {
-    const errors: AddBookFormValues = {};
+    const errors: ErrorFieldsMessagesType = {};
 
     if (!values.title) {
       errors.title = 'Required';

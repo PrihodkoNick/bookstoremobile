@@ -3,16 +3,12 @@ import {connect} from 'react-redux';
 import {Container, Content} from 'native-base';
 
 import {addBook} from '../../actions/books';
+import {IBooks, AddBookFormValues, CategoryType} from '../../types';
 
 import AddBookForm from './components/AddBookForm';
 
-type AddBookFormValues = {
-  title?: string;
-  author?: string;
-};
-
 interface AddBookProps {
-  categories: any;
+  categories: CategoryType[];
   addBook: (values: AddBookFormValues) => void;
 }
 
@@ -22,7 +18,7 @@ const AddBook: FC<AddBookProps> = ({categories, addBook}) => {
   };
 
   const memoizedCategories = useMemo(() => {
-    return categories.map((item: any) => {
+    return categories.map((item: CategoryType) => {
       return {
         value: item.id,
         label: item.name,
@@ -39,7 +35,7 @@ const AddBook: FC<AddBookProps> = ({categories, addBook}) => {
   );
 };
 
-const mapStateToProps = ({books}: {books: any}) => ({
+const mapStateToProps = ({books}: {books: IBooks}) => ({
   categories: books.categories,
 });
 

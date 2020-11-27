@@ -13,5 +13,8 @@ export const registerUser = async (body) => {
 };
 
 export const editUser = async (body) => {
+
+  console.log('User body: ', body);
+
   return await api.patch('/api/users', body);
 };

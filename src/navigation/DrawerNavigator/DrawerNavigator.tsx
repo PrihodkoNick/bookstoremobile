@@ -6,7 +6,6 @@ import {
   DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
-import AsyncStorage from '@react-native-community/async-storage';
 
 import {logout} from '../../actions/auth';
 
@@ -20,9 +19,8 @@ interface DrawerNavigatorProps {
 
 const Drawer = createDrawerNavigator();
 
-const userLogout = async (navigation: any, onLogout: () => void) => {
-  await AsyncStorage.removeItem('token');
-  await onLogout();
+const userLogout = (navigation: any, onLogout: () => void) => {
+  onLogout();
   navigation.navigate('Home');
 };
 

@@ -1,29 +1,31 @@
 import React, {FC, useEffect, useState} from 'react';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import {TouchableOpacity, StyleSheet} from 'react-native';
 import {Container, Content} from 'native-base';
 import FingerprintScanner from 'react-native-fingerprint-scanner';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {login, loadUser, reloadUser} from '../../actions/auth';
+import {loadUser, login} from '../../actions/auth';
 import {getMessageForBiometrics} from '../../utils/getMessageForBiometrics';
-import {getToken} from '../../utils/getToken';
 import {showToast} from '../../utils/showToast';
 
 import LoginForm from './components/LoginForm';
 
 import {CredentialsType} from '../../types';
+import {ACTION_TYPES} from '../../actions/types';
 
 interface LoginProps {
   login: (credentials: CredentialsType) => void;
   loadUser: () => void;
-  reloadUser: (token: string) => void;
 }
 
-const Login: FC<LoginProps> = ({login, loadUser, reloadUser}) => {
+const Login: FC<LoginProps> = ({login, loadUser}) => {
   const [biometryType, setBiometryType] = useState<string | undefined>(
     undefined,
   );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     FingerprintScanner.isSensorAvailable()
@@ -39,18 +41,23 @@ const Login: FC<LoginProps> = ({login, loadUser, reloadUser}) => {
     login(credentials);
   };
 
-  const showAuthenticationDialog = () => {
+  const showAuthenticationDialog = async () => {
     if (biometryType !== null && biometryType !== undefined) {
-      const token = getToken();
+      const token = await AsyncStorage.getItem('token');
+
       if (token) {
         FingerprintScanner.authenticate({
           description: getMessageForBiometrics(biometryType),
         })
           .then(() => {
-            console.log('Login success!!!!');
+            dispatch({
+              type: ACTION_TYPES.loginSuccess,
+              payload: token,
+            });
 
-            reloadUser(token);
-            // showToast('Login success', 'success');
+            loadUser(token);
+
+            showToast('Login success', 'success');
           })
           .catch((error) => {
             console.log('Authentication error is => ', error);
@@ -92,4 +99,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(null, {login, loadUser, reloadUser})(Login);
+export default connect(null, {login, loadUser})(Login);

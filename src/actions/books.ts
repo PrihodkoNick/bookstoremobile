@@ -1,7 +1,7 @@
 import {getBooks, getCategories, createBook} from '../api/books';
 import {showToast} from '../utils/showToast';
 import {ACTION_TYPES} from './types';
-import {AppThunk} from '../types';
+import {AppThunk, ServerErrorType} from '../types';
 
 // loadBooks
 export const loadBooks = (queryParams?: string | null): AppThunk => async (
@@ -18,7 +18,9 @@ export const loadBooks = (queryParams?: string | null): AppThunk => async (
     const errors = error.response.data.errors;
 
     if (errors) {
-      errors.forEach((error: any) => showToast(error.msg, 'danger'));
+      errors.forEach((err: ServerErrorType) => {
+        showToast(err.msg, 'danger');
+      });
     }
   }
 };
@@ -36,7 +38,9 @@ export const loadCategories = (): AppThunk => async (dispatch) => {
     const errors = error.response.data.errors;
 
     if (errors) {
-      errors.forEach((error: any) => showToast(error.msg, 'danger'));
+      errors.forEach((err: ServerErrorType) => {
+        showToast(err.msg, 'danger');
+      });
     }
   }
 };
@@ -57,7 +61,9 @@ export const addBook = (data: any): AppThunk => async (dispatch) => {
     const errors = error.response.data.errors;
 
     if (errors) {
-      errors.forEach((error: any) => showToast(error.msg, 'danger'));
+      errors.forEach((err: ServerErrorType) => {
+        showToast(err.msg, 'danger');
+      });
     }
   }
 };

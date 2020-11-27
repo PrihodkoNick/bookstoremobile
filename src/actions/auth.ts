@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {loginUser, getUser, registerUser, editUser} from '../api/auth';
 import {showToast} from '../utils/showToast';
 import {ACTION_TYPES} from './types';
-import {AppThunk} from '../types';
+import {AppThunk, ServerErrorType} from '../types';
 
 // Login User
 export const login = ({
@@ -32,7 +32,9 @@ export const login = ({
       const errors = err.response.data.errors;
 
       if (errors) {
-        errors.forEach((error) => showToast(error.msg, 'danger'));
+        errors.forEach((error: ServerErrorType) => {
+          showToast(error.msg, 'danger');
+        });
       }
       await AsyncStorage.removeItem('token');
 
@@ -42,42 +44,33 @@ export const login = ({
     });
 };
 
-// reloadUser
-export const reloadUser = (token: string): AppThunk => (dispatch) => {
-  try {
-    dispatch({
-      type: ACTION_TYPES.loginSuccess,
-      payload: token,
-    });
-
-    // dispatch(loadUser());
-    showToast('Login success', 'success');
-  } catch (error) {
-    showToast(error.msg, 'danger');
-  }
-};
-
 // Load User
 export const loadUser = (): AppThunk => async (dispatch) => {
-  getUser()
-    .then((res) => {
-      dispatch({
-        type: ACTION_TYPES.userLoaded,
-        payload: res.data,
-      });
-    })
-    .catch(async (err) => {
-      const errors = err.response.data.errors;
-      if (errors) {
-        errors.forEach((error) => showToast(error.msg, 'danger'));
-      }
+  const token = await AsyncStorage.getItem('token');
 
-      await AsyncStorage.removeItem('token');
+  if (token) {
+    getUser()
+      .then((res) => {
+        dispatch({
+          type: ACTION_TYPES.userLoaded,
+          payload: res.data,
+        });
+      })
+      .catch(async (err) => {
+        const errors = err.response.data.errors;
+        if (errors) {
+          errors.forEach((error: ServerErrorType) => {
+            showToast(error.msg, 'danger');
+          });
+        }
 
-      dispatch({
-        type: ACTION_TYPES.authError,
+        await AsyncStorage.removeItem('token');
+
+        dispatch({
+          type: ACTION_TYPES.authError,
+        });
       });
-    });
+  }
 };
 
 // Register User
@@ -108,7 +101,9 @@ export const register = ({
     .catch(async (err) => {
       const errors = err.response.data.errors;
       if (errors) {
-        errors.forEach((error) => showToast(error.msg, 'danger'));
+        errors.forEach((error: ServerErrorType) => {
+          showToast(error.msg, 'danger');
+        });
       }
       await AsyncStorage.removeItem('token');
 
@@ -119,25 +114,38 @@ export const register = ({
 };
 
 // Logout
-export const logout = (): AppThunk => (dispatch) => {
-  dispatch({type: ACTION_TYPES.logOut});
+export const logout = (): AppThunk => async (dispatch) => {
+  try {
+    await AsyncStorage.removeItem('token');
+
+    dispatch({type: ACTION_TYPES.logOut});
+  } catch (error) {
+    const errors = error.response.data.errors;
+    if (errors) {
+      errors.forEach((error: ServerErrorType) => {
+        showToast(error.msg, 'danger');
+      });
+    }
+  }
 };
 
 // Update User
-export const updateUser = (data: any): AppThunk => (dispatch) => {
-  editUser(data)
-    .then((res) => {
-      dispatch({
-        type: ACTION_TYPES.updateUser,
-        payload: res.data,
-      });
+export const updateUser = (data: FormData): AppThunk => async (dispatch) => {
+  try {
+    const res = await editUser(data);
 
-      showToast('User updated', 'success');
-    })
-    .catch((err) => {
-      const errors = err.response.data.errors;
-      if (errors) {
-        errors.forEach((error) => showToast(error.msg, 'danger'));
-      }
+    dispatch({
+      type: ACTION_TYPES.updateUser,
+      payload: res.data,
     });
+
+    showToast('User updated', 'success');
+  } catch (error) {
+    const errors = error.response.data.errors;
+    if (errors) {
+      errors.forEach((error: ServerErrorType) => {
+        showToast(error.msg, 'danger');
+      });
+    }
+  }
 };

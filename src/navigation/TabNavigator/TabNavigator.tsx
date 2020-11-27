@@ -36,6 +36,8 @@ const BottomTabNavigator = ({isAuthenticated}: {isAuthenticated: boolean}) => {
             iconName = focused ? 'heart' : 'heart-outline';
           } else if (route.name === 'Add book') {
             iconName = focused ? 'add-circle' : 'add-circle-outline';
+          } else {
+            iconName = 'help-circle';
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;

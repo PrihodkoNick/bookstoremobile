@@ -40,11 +40,16 @@ type BookType = {
   cover: string;
 };
 
+export type CategoryType = {
+  id: string;
+  name: string;
+};
+
 export interface IBooks {
   data: BookType[];
   loading: boolean;
   error: string;
-  categories: string;
+  categories: CategoryType[];
   authors: string;
   favorites: string;
 }
@@ -55,3 +60,16 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
+
+export type ServerErrorType = {
+  msg: string;
+};
+
+export type AddBookFormValues = {
+  title: string;
+  author: string;
+  description?: string;
+  fragment?: string;
+  price: string;
+  categoryId: string;
+};

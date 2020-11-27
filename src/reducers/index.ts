@@ -1,6 +1,5 @@
 import {combineReducers} from 'redux';
-
-import auth from './auth.js';
+import auth from './auth';
 import books from './books';
 
 const allReducers = combineReducers({
@@ -9,5 +8,4 @@ const allReducers = combineReducers({
 });
 
 export default allReducers;
-
 export type RootState = ReturnType<typeof allReducers>;

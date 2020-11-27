@@ -5,7 +5,6 @@ import {NavigationContainer} from '@react-navigation/native';
 
 import {loadUser} from './src/actions/auth';
 import {loadCategories} from './src/actions/books';
-import {getToken} from './src/utils/getToken';
 
 import DrawerNavigator from './src/navigation/DrawerNavigator/DrawerNavigator';
 
@@ -19,12 +18,11 @@ interface AppProps {
 
 const App: FC<AppProps> = ({isAuthenticated, loadUser, loadCategories}) => {
   useEffect(() => {
-    const token = getToken();
-    if (token) {
+    if (isAuthenticated) {
       loadUser();
+      loadCategories();
     }
-    loadCategories();
-  }, [loadUser, loadCategories]);
+  }, [isAuthenticated, loadUser, loadCategories]);
 
   return (
     <Root>
